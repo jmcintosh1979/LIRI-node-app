@@ -12,53 +12,71 @@ var spotify = new Spotify(keys.spotify);
 // * Variables to take in the users input from the command line
 var action = process.argv[2];
 var input = process.argv;
+var inputData = "";
+
+for (let i = 3; i < input.length; i++) {
+  if (i > 3 && i < input.length) {
+    inputData = inputData + "+" + input[i];
+  } else {
+    inputData += input[i];
+  }
+};
 
 // * Switch statement to take the "action" request from the command line
 // * which will then activate the appropriate function for the "action" 
 switch (action) {
   case "concert-this":
-    concertSearch(input);
+    concertSearch(inputData);
     break;
   case "spotify-this-song":
-    songSearch(input);
+    songSearch(inputData);
     break;
   case "movie-this":
-    movieSearch(input);
+    movieSearch(inputData);
     break;
   case "do-what-it-says":
-    // TODO: Complete this with a function / call to action;
+    doWhatItSays();
     break;
   default:
     console.log("You need to put in an action");
-}
+};
+
+// ! NOTE REALLY SURE WHAT THIS IS FOR, BUT HOMEWORK SAID WE NEEDED TO CREATE IT...JUST NOT REALLY SURE HOW TO USE THESE RIGHT NOW.
+
+// var concert = spotify.concernt,
+//     song = spotify.song,
+//     movie = spotify.movie,
+//     says = spotify.says;
 
 // * FUNCTION THAT WILL TAKE IN USER INPUT FOR A ARTIST/BAND AND RESPOND WITH 
 // * EACH EVENT FOR THE ARTIST/BAND THAT WAS INPUTTED.
 
-// function concertSearch(concert) {
 
-// }
+
+function concertSearch(concert) {
+
+};
 
 // * FUNCTION THAT WILL TAKE IN USER INPUT FOR A TRACK AND RESPOND WITH THE 
 // * ARTISTS(S), SONG NAME, A LINK FOR PREVIEWING THE SONG, AND THE ALBUM NAME
 
 function songSearch(song) {
 
-  var songName = "";
+  // var songName = "";
 
-  for (var i = 3; i < song.length; i++) {
-    if (i > 3 && i < song.length) {
-      songName = songName + "+" + song[i];
-    } else {
-      songName += song[i];
-    }
-  }
-    // console.log(songName);
+  // for (var i = 3; i < song.length; i++) {
+  //   if (i > 3 && i < song.length) {
+  //     songName = songName + "+" + song[i];
+  //   } else {
+  //     songName += song[i];
+  //   }
+  // }
+    // console.log(song);
 
   spotify
   .search({
     type: "track",
-    query: songName,
+    query: song,
     limit: 1
   })
   .then(function(response) {
@@ -89,19 +107,19 @@ function songSearch(song) {
 
 function movieSearch(movie) {
 
-  var movieName = "";
+  // var movieName = "";
 
-  for (var i = 3; i < movie.length; i++) {
-    if (i > 3 && i < movie.length) {
-      movieName = movieName + "+" + movie[i];
-    } else {
-      movieName += movie[i];
-    }
-  }
-    // console.log(movieName);
+  // for (var i = 3; i < movie.length; i++) {
+  //   if (i > 3 && i < movie.length) {
+  //     movieName = movieName + "+" + movie[i];
+  //   } else {
+  //     movieName += movie[i];
+  //   }
+  // }
+    // console.log(movie);
 
 
-  var queryURL = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+  var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
   
   // console.log(queryURL);
 
@@ -122,14 +140,37 @@ function movieSearch(movie) {
       console.log("-------------------------------------------------");
     }
   })
-}
+};
 
+// * FUNCTION THAT WILL TAKE IN THE TEXT IN THE RANDOM.TXT FILE AND TRIGGER 
+// * ONE OF THE ABOVE FUNCTIONS. 
 
+function doWhatItSays() {
 
-// ! NOTE REALLY SURE WHAT THIS IS FOR, BUT HOMEWORK SAID WE NEEDED TO CREATE IT...JUST NOT REALLY SURE HOW TO USE THESE RIGHT NOW.
+  fs.readFile("random.txt", "utf8", function(error, randomData) {
 
-// var concert = spotify.concernt,
-//     song = spotify.song,
-//     movie = spotify.movie,
-//     says = spotify.says;
+    if (error) {
+      return console.log(error);
+    }
 
+    var randomInfo = randomData.split(",");
+    var randomAction = randomInfo[0];
+    var randomInput = randomInfo[1];
+  
+    console.log("***************************\n" + randomAction + "\n" + randomInput + "\n***************************");
+
+    switch (randomAction) {
+      case "concert-this":
+        concertSearch(randomInput);
+        break;
+      case "spotify-this-song":
+        songSearch(randomInput);
+        break;
+      case "movie-this":
+        movieSearch(randomInput);
+        break;
+      default:
+        console.log("You need to put in an action");
+    }
+  })
+};
