@@ -53,8 +53,30 @@ switch (action) {
 
 
 
-function concertSearch(concert) {
+function concertSearch(artist) {
 
+  // console.log(artist);
+
+  var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+  
+  console.log(queryURL);
+
+  request(queryURL, function(error, response) {
+
+    var concertResponse = JSON.parse(response.body);
+    // var dateResponse = JSON.parse(response.body)[i].datatime;
+    // var convertedTime = moment(dateResponse).format("MM/DD/YYYY");
+
+    if (!error && response.statusCode === 200) {
+      for (i = 0; i < concertResponse.length; i++) {
+        console.log("-------------------------------------------------");
+        console.log("Name of Venue: " + concertResponse[i].venue.name);
+        console.log("Venue Location: " + concertResponse[i].venue.city);
+        console.log("Date of Event: " + concertResponse[i].datetime);
+        console.log("-------------------------------------------------");
+      }
+    }
+  })
 };
 
 // * FUNCTION THAT WILL TAKE IN USER INPUT FOR A TRACK AND RESPOND WITH THE 
