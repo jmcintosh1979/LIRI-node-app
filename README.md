@@ -6,17 +6,17 @@ LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and R
 ## LIRI Commands
 
 ### node liri.js concert-this
-![alt text] (images/concert-this.png)
-
+![concert-this](images/concert-this.png)
 
 ###node liri.js spotify-this-song
-![alt text] (images/spotify-this-song.png)
+
+![spotify-this-song](images/spotify-this-song.png)
 
 
 ###node liri.js movie-this
-![alt text] (images/movie-this.png)
+![movie-this](images/movie-this.png)
 
 
 ###node liri.js do-what-it-says
-![alt text] (images/do-what-it-says.png)
+![do-what-it-says](images/do-what-it-says.png)
 
