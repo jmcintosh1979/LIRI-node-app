@@ -11,16 +11,16 @@ var spotify = new Spotify(keys.spotify);
 
 // * Variables to take in the users input from the command line
 var action = process.argv[2];
-var input = process.argv;
-var inputData = "";
+var inputData = process.argv.slice(3).join(" ");;
+// var inputData = "";
 
-for (let i = 3; i < input.length; i++) {
-  if (i > 3 && i < input.length) {
-    inputData = inputData + "+" + input[i];
-  } else {
-    inputData += input[i];
-  }
-};
+// for (let i = 3; i < input.length; i++) {
+//   if (i > 3 && i < input.length) {
+//     inputData = inputData + "+" + input[i];
+//   } else {
+//     inputData += input[i];
+//   }
+// };
 
 // * Switch statement to take the "action" request from the command line
 // * which will then activate the appropriate function for the "action" 
@@ -38,7 +38,7 @@ switch (action) {
     doWhatItSays();
     break;
   default:
-    console.log("You need to put in an action");
+    console.log("\nPlease put in 'concert-this', 'spotify-this-song', 'movie-this' or 'do-what-it-says' followed by your request\n");
 };
 
 // ! NOTE REALLY SURE WHAT THIS IS FOR, BUT HOMEWORK SAID WE NEEDED TO CREATE IT...JUST NOT REALLY SURE HOW TO USE THESE RIGHT NOW.
@@ -74,7 +74,7 @@ function concertSearch(artist) {
         var dateResponse = JSON.parse(response.body)[i].datetime;
         var convertedTime = moment(dateResponse).format("MM/DD/YYYY");
         console.log("Date of Event: " + convertedTime);
-        console.log("-------------------------------------------------");
+        console.log("-------------------------------------------------");        
       }
     }
   })
@@ -85,16 +85,9 @@ function concertSearch(artist) {
 
 function songSearch(song) {
 
-  // var songName = "";
-
-  // for (var i = 3; i < song.length; i++) {
-  //   if (i > 3 && i < song.length) {
-  //     songName = songName + "+" + song[i];
-  //   } else {
-  //     songName += song[i];
-  //   }
-  // }
-    // console.log(song);
+  if (!song) {
+    song = "Ace of Base"
+  }
 
   spotify
   .search({
@@ -130,17 +123,10 @@ function songSearch(song) {
 
 function movieSearch(movie) {
 
-  // var movieName = "";
-
-  // for (var i = 3; i < movie.length; i++) {
-  //   if (i > 3 && i < movie.length) {
-  //     movieName = movieName + "+" + movie[i];
-  //   } else {
-  //     movieName += movie[i];
-  //   }
-  // }
-    // console.log(movie);
-
+  if (!movie) {
+    movie = "Mr Nobody"
+    console.log("If you haven't watched 'Mr. Nobody', then you should: http:imdb.com/title/tt0485947/\nIt's on Netflix!")
+  }
 
   var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
   
@@ -161,8 +147,11 @@ function movieSearch(movie) {
       console.log("Plot of Movie: " + movieResponse.Plot);
       console.log("Actors: " + movieResponse.Actors);
       console.log("-------------------------------------------------");
+
     }
   })
+
+  
 };
 
 // * FUNCTION THAT WILL TAKE IN THE TEXT IN THE RANDOM.TXT FILE AND TRIGGER 
@@ -180,8 +169,6 @@ function doWhatItSays() {
     var randomAction = randomInfo[0];
     var randomInput = randomInfo[1];
   
-    console.log("***************************\n" + randomAction + "\n" + randomInput + "\n***************************");
-
     switch (randomAction) {
       case "concert-this":
         concertSearch(randomInput);
