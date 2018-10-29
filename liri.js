@@ -51,8 +51,6 @@ switch (action) {
 // * FUNCTION THAT WILL TAKE IN USER INPUT FOR A ARTIST/BAND AND RESPOND WITH 
 // * EACH EVENT FOR THE ARTIST/BAND THAT WAS INPUTTED.
 
-
-
 function concertSearch(artist) {
 
   // console.log(artist);
@@ -64,15 +62,18 @@ function concertSearch(artist) {
   request(queryURL, function(error, response) {
 
     var concertResponse = JSON.parse(response.body);
-    // var dateResponse = JSON.parse(response.body)[i].datatime;
-    // var convertedTime = moment(dateResponse).format("MM/DD/YYYY");
 
+    // console.log(concertResponse)
+    
     if (!error && response.statusCode === 200) {
       for (i = 0; i < concertResponse.length; i++) {
         console.log("-------------------------------------------------");
         console.log("Name of Venue: " + concertResponse[i].venue.name);
         console.log("Venue Location: " + concertResponse[i].venue.city);
-        console.log("Date of Event: " + concertResponse[i].datetime);
+        
+        var dateResponse = JSON.parse(response.body)[i].datetime;
+        var convertedTime = moment(dateResponse).format("MM/DD/YYYY");
+        console.log("Date of Event: " + convertedTime);
         console.log("-------------------------------------------------");
       }
     }
